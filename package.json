@@ -5,7 +5,8 @@
   "license": "MIT",
   "scripts": {
     "api:forecast": "nodemon api/forecast/index.js 8010",
-    "api:geocode": "nodemon api/geocode/index.js 8020"
+    "api:geocode": "nodemon api/geocode/index.js 8020",
+    "api:reverse-geocode": "nodemon api/reverse-geocode/index.js 8030"
   },
   "devDependencies": {
     "nodemon": "^1.18.9"
