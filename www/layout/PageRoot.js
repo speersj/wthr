@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import Head from 'next/head'
 import PropTypes from 'prop-types'
 import { ThemeProvider, createGlobalStyle } from 'styled-components'
+import { Provider } from 'unstated'
+
 import theme from '../lib/theme'
 import DarkskyLink from '../components/DarkskyLink'
 import PageLayout from './PageLayout'
@@ -27,7 +29,7 @@ export default class PageRoot extends Component {
   render() {
     return (
       <ThemeProvider theme={theme}>
-        <>
+        <Provider>
           <Head>
             <title>{this.props.title}</title>
             <meta
@@ -44,7 +46,7 @@ export default class PageRoot extends Component {
               <DarkskyLink />
             </Footer>
           </PageLayout>
-        </>
+        </Provider>
       </ThemeProvider>
     )
   }
