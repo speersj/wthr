@@ -1,0 +1,19 @@
+{
+  "name": "wthr",
+  "version": 2,
+  "env": {
+    "DARKSKY_API_KEY": "@darksky-api-key",
+    "LOCATIONIQ_API_KEY": "@locationiq-api-key",
+    "IS_NOW": "true"
+  },
+  "builds": [{ "src": "www/package.json", "use": "@now/next" }],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "/www/$1",
+      "headers": {
+        "x-request-path": "$1"
+      }
+    }
+  ]
+}
