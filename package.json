@@ -4,7 +4,8 @@
   "author": "Justin Speers <2447636+speersj@users.noreply.github.com>",
   "license": "MIT",
   "scripts": {
-    "api:forecast": "nodemon api/forecast/index.js 8010"
+    "api:forecast": "nodemon api/forecast/index.js 8010",
+    "api:geocode": "nodemon api/geocode/index.js 8020"
   },
   "devDependencies": {
     "nodemon": "^1.18.9"
