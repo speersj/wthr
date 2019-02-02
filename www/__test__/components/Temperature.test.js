@@ -8,11 +8,11 @@ afterEach(cleanup)
 
 describe('Temperature', () => {
   it('should display the temperature as a rounded number', () => {
-    render(<Temperature temp={50.6} />).getByText('51', { exact: false })
-    render(<Temperature temp={50.44} />).getByText('50', { exact: false })
+    render(<Temperature value={50.6} />).getByText('51', { exact: false })
+    render(<Temperature value={50.44} />).getByText('50', { exact: false })
   })
 
   it('should display a ˚ sign', () => {
-    render(<Temperature temp={32} />).getByText('32˚')
+    render(<Temperature value={32} />).getByText('32˚')
   })
 })
