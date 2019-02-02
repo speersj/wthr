@@ -10,10 +10,9 @@ MoonPhaseIcon.defaultProps = { moonPhase: 0 }
  * @param {Number} moonPhase - 0 -> 1 moonPhase from darksky api
  */
 export default function MoonPhaseIcon({ moonPhase }) {
+  const title = moonPhaseName(moonPhase) + ' Moon'
   return (
-    <>
-      <i className={moonPhaseClassName(moonPhase)} />
-    </>
+    <i title={title} role="img" className={moonPhaseClassName(moonPhase)} />
   )
 }
 

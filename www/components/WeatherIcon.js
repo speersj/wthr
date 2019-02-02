@@ -7,8 +7,9 @@ WeatherIcon.propTypes = { name: PropTypes.string.isRequired }
 export default function WeatherIcon({ name }) {
   return (
     <i
+      title={name}
+      role="img"
       style={{ color: theme.colors[name] || theme.colors.text }}
-      data-testid="weather-icon"
       className={iconClassName(name)}
     />
   )

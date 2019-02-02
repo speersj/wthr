@@ -3,7 +3,8 @@
 exports[`WeatherIcon outputs correct html 1`] = `
 <i
   class="wi wi-forecast-io-rain"
-  data-testid="weather-icon"
+  role="img"
   style="color: rgb(139, 233, 253);"
+  title="rain"
 />
 `;

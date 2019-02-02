@@ -1,0 +1,10 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Icon outputs correct html 1`] = `
+<i
+  class="wi wi-test"
+  data-testid="plain-icon"
+  role="img"
+  title="test"
+/>
+`;

@@ -1,0 +1,9 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MoonPhaseIcon renders correct html 1`] = `
+<i
+  class="wi wi-moon-waxing-crescent-5"
+  role="img"
+  title="Waxing Crescent Moon"
+/>
+`;

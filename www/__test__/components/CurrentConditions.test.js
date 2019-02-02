@@ -37,10 +37,8 @@ describe('CurrentConditions', () => {
   })
 
   it('renders the appropriate icon', () => {
-    const { getByTestId } = renderCurrentConditions()
-    expect(getByTestId('weather-icon').className).toEqual(
-      'wi wi-forecast-io-rain',
-    )
+    const { getByRole } = renderCurrentConditions()
+    expect(getByRole('img').className).toEqual('wi wi-forecast-io-rain')
   })
 
   it('gives the temperature as a round number', () => {

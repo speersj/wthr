@@ -16,7 +16,8 @@ const props = {
 
 describe('ForecastThumbnail', () => {
   it('renders the correct icon', () => {
-    render(<ForecastThumbnail {...props} />).getByTestId('weather-icon')
+    const { getByRole } = render(<ForecastThumbnail {...props} />)
+    expect(getByRole('img').className).toEqual('wi wi-forecast-io-sunny')
   })
 
   it('renders the high temperature', () => {
