@@ -7,6 +7,7 @@ import WeatherContainer from '../containers/WeatherContainer'
 import Location from '../components/Location'
 import WeatherStatsBar from '../components/WeatherStatsBar'
 import CurrentConditions from '../components/CurrentConditions'
+import Forecast from '../components/Forecast'
 
 Index.propTypes = { host: PropTypes.string.isRequired }
 
@@ -26,6 +27,8 @@ export default function Index(props) {
               conditions={container.state.weather.currently}
               forecastSummary={container.state.weather.daily.summary}
             />
+
+            <Forecast data={container.state.weather.daily.data.slice(0, 6)} />
           </>
         )}
       </Subscribe>
