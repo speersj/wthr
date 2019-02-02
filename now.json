@@ -6,7 +6,12 @@
     "LOCATIONIQ_API_KEY": "@locationiq-api-key",
     "IS_NOW": "true"
   },
-  "builds": [{ "src": "www/package.json", "use": "@now/next" }],
+  "builds": [
+    { "src": "www/package.json", "use": "@now/next" },
+    { "src": "api/forecast/*.js", "use": "@now/node" },
+    { "src": "api/geocode/*.js", "use": "@now/node" },
+    { "src": "api/reverse-geocode/*.js", "use": "@now/node" }
+  ],
   "routes": [
     {
       "src": "/(.*)",
