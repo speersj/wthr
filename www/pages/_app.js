@@ -3,7 +3,6 @@ import App, { Container } from 'next/app'
 
 export default class MyApp extends App {
   static async getInitialProps({ Component, router, ctx }) {
-    // pass hostname down to components
     const host = ctx.req.headers.host
     let pageProps = { host }
 
