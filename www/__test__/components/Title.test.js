@@ -1,6 +1,9 @@
 import React from 'react'
+import { render, cleanup } from 'react-testing-library'
+import 'jest-dom/extend-expect'
 import Title from '../../components/Title'
-import { render } from 'react-testing-library'
+
+afterEach(cleanup)
 
 describe('Title', () => {
   it('renders its children', () => {
