@@ -27,3 +27,13 @@ export function negate(fn) {
     return !fn(...args)
   }
 }
+
+/**
+ * Capitalizes the first character of a string
+ * @param {string} str
+ * @returns {string} str with first letter capitalized
+ */
+export function capitalize(str) {
+  if (typeof str !== 'string' || str.length === 0) return ''
+  return str[0].toUpperCase() + str.slice(1)
+}

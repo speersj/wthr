@@ -1,4 +1,4 @@
-import { isEmpty, negate, isNotEmpty } from '../../lib/utils'
+import { isEmpty, negate, isNotEmpty, capitalize } from '../../lib/utils'
 
 describe('isEmpty', () => {
   it('returns false if an object is not empty', () => {
@@ -58,5 +58,23 @@ describe('isNotEmpty', () => {
 
   it('returns false for an empty array', () => {
     expect(isNotEmpty([])).toBeFalsy()
+  })
+})
+
+describe('capitalize', () => {
+  it('capitalizes the first character of a string', () => {
+    expect(capitalize('justin')).toEqual('Justin')
+  })
+
+  it('always returns a string, even if given an empty string', () => {
+    expect(capitalize('')).toEqual('')
+  })
+
+  it('always returns a string, even if given no input', () => {
+    expect(capitalize()).toEqual('')
+  })
+
+  it('always returns a string, even if given a non-string input', () => {
+    expect(capitalize(1)).toEqual('')
   })
 })
