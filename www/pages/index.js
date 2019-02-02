@@ -6,6 +6,7 @@ import PageRoot from '../layout/PageRoot'
 import WeatherContainer from '../containers/WeatherContainer'
 import Location from '../components/Location'
 import WeatherStatsBar from '../components/WeatherStatsBar'
+import CurrentConditions from '../components/CurrentConditions'
 
 Index.propTypes = { host: PropTypes.string.isRequired }
 
@@ -19,6 +20,11 @@ export default function Index(props) {
             <WeatherStatsBar
               title={container.state.location}
               {...container.state.weather.currently}
+            />
+
+            <CurrentConditions
+              conditions={container.state.weather.currently}
+              forecastSummary={container.state.weather.daily.summary}
             />
           </>
         )}
