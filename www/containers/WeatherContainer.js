@@ -3,8 +3,8 @@ import axios from 'axios'
 import { reverseGeocodeURL, forecastURL } from '../lib/apiURLs'
 import { browserCoordinates } from '../lib/geocoding'
 
-// disabled for testing TODO
-const LOCAL_STORAGE_ENABLED = false
+// not yet implemented
+const LOCALSTORAGE_ENABLED = false
 
 export default class WeatherContainer extends Container {
   state = {
@@ -20,7 +20,9 @@ export default class WeatherContainer extends Container {
   /**
    * load initial location from local storage (if enabled & present)
    * or from browser location, then load weather data
-   * @param {string} host - host, ex localhost:3000, for making ajax requests
+   * @param {string} host - host, ex localhost:3000, for making ajax requests -
+   * this is necessary because API endpoints run on different hosts locally and
+   * "now dev" does not exist yet
    *
    */
   load = async host => {
@@ -57,16 +59,18 @@ export default class WeatherContainer extends Container {
    * @returns {object} - { lat, lng, location } or {} if non-existent
    */
   localStorageLoad = () => {
-    if (!LOCAL_STORAGE_ENABLED) return {}
-    const { lat, lng, location } = localStorage
-    return { lat, lng, location }
+    if (LOCALSTORAGE_ENABLED) {
+      const { lat, lng, location } = localStorage
+      return { lat, lng, location }
+    }
+
+    return {}
   }
 
   /**
    * Saves state (lat, lng, location) to localStorage
    */
   localStorageSave = () => {
-    if (!LOCAL_STORAGE_ENABLED) return
     localStorage.lat = this.state.lat
     localStorage.lng = this.state.lng
     localStorage.location = this.state.location
