@@ -28,13 +28,13 @@ describe('ForecastThumbnail', () => {
     render(<ForecastThumbnail {...props} />).getByText('62˚')
   })
 
-  it('renders the date', () => {
-    render(<ForecastThumbnail {...props} />).getByText('Jan 18')
+  it('renders the day of the week', () => {
+    render(<ForecastThumbnail {...props} />).getByText('Fri')
   })
 
   it('responds to click events', () => {
     const { getByText } = render(<ForecastThumbnail {...props} />)
-    fireEvent.click(getByText('Jan 18'))
+    fireEvent.click(getByText('Fri'))
     expect(props.onClick).toHaveBeenCalled()
   })
 })
