@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { Card, Heading } from 'rebass'
 import styled from 'styled-components'
 import WeatherIcon from './WeatherIcon'
-import { toDate } from '../lib/dateTime'
+import { toDate, toDayOfWeek } from '../lib/dateTime'
 import theme from '../lib/theme'
 import Temperature from './Temperature'
 import TextBoxCentered from './TextBoxCentered'
@@ -51,7 +51,7 @@ export default function ForecastThumbnail(props) {
       </TextBoxCentered>
 
       <TextCentered color={active ? 'text' : 'textMuted'}>
-        {toDate(time)}
+        {toDayOfWeek(time, true)}
       </TextCentered>
     </HighlightCard>
   )
