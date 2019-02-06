@@ -8,12 +8,10 @@ const props = {
   forecastSummary:
     'Light rain tomorrow through Monday, with high temperatures falling to 40°F on Monday.',
 
-  conditions: {
-    summary: 'It is raining outside',
-    icon: 'rain',
-    temperature: 49.7,
-    apparentTemperature: 52.3,
-  },
+  summary: 'It is raining outside',
+  icon: 'rain',
+  temperature: 49.7,
+  apparentTemperature: 52.3,
 }
 
 function renderCurrentConditions() {
@@ -31,7 +29,7 @@ describe('CurrentConditions', () => {
   })
 
   it('renders a weather summary and shows apparent temperature', () => {
-    const txt = props.conditions.summary + ', feels like'
+    const txt = props.summary + ', feels like'
     const container = renderCurrentConditions().getByText(txt)
     expect(container.firstElementChild.textContent).toEqual('52˚')
   })

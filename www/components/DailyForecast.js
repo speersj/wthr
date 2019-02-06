@@ -54,7 +54,6 @@ Cell.propTypes = { children: PropTypes.node }
 
 export default function DailyForecast(props) {
   const { time } = props
-
   if (time == undefined) {
     return (
       <Box width={1} bg="bgEm">

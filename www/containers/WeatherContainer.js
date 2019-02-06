@@ -1,88 +1,29 @@
 import { Container } from 'unstated'
 import axios from 'axios'
-import { reverseGeocodeURL, forecastURL } from '../lib/apiURLs'
-import { browserCoordinates } from '../lib/geocoding'
-
-// not yet implemented
-const LOCALSTORAGE_ENABLED = false
+import { forecastURL } from '../lib/apiURLs'
 
 export default class WeatherContainer extends Container {
   state = {
-    location: '',
-    weather: {
-      currently: {},
-      daily: {
-        data: [],
-      },
+    currently: {},
+    daily: {
+      data: [],
     },
   }
 
   /**
-   * load initial location from local storage (if enabled & present)
-   * or from browser location, then load weather data
-   * @param {string} host - host, ex localhost:3000, for making ajax requests -
-   * this is necessary because API endpoints run on different hosts locally and
-   * "now dev" does not exist yet
-   *
+   * init
+   * @param {string} host - hostname, ex localhost:3000 / wthr.now.sh
    */
-  load = async host => {
-    await this.setState({ host })
-    const { lat, lng, location } = this.localStorageLoad()
+  init = async host => this.setState({ host })
 
-    if (lat && lng && location) {
-      this.getForecast({ lat, lng })
-      this.setState({ lat, lng, location })
-    } else {
-      browserCoordinates(this.setLocationFromBrowser)
-    }
-  }
-
-  // callback for setting location from browser
-  setLocationFromBrowser = async ({ lat, lng }) => {
-    await this.setState({ lat, lng })
-    this.getForecast({ lat, lng })
-    await this.reverseGeocode()
-    this.localStorageSave()
-  }
-
-  // sets this.state.location by calling reverse-geocode api endpoint
-  // with this.state.lat & this.state.lng
-  reverseGeocode = async () => {
-    const { lat, lng } = this.state
-    const res = await axios.get(reverseGeocodeURL(this.state.host, lat, lng))
-    const { city, state, county } = res.data.address
-    return this.setState({ location: `${city || county}, ${state}` })
-  }
-
-  /**
-   * Loads previously saved values from local storage
-   * @returns {object} - { lat, lng, location } or {} if non-existent
-   */
-  localStorageLoad = () => {
-    if (LOCALSTORAGE_ENABLED) {
-      const { lat, lng, location } = localStorage
-      return { lat, lng, location }
-    }
-
-    return {}
-  }
-
-  /**
-   * Saves state (lat, lng, location) to localStorage
-   */
-  localStorageSave = () => {
-    localStorage.lat = this.state.lat
-    localStorage.lng = this.state.lng
-    localStorage.location = this.state.location
-  }
-
-  getForecast = async ({ lat, lng }) => {
-    const url = forecastURL(this.state.host, lat, lng)
-    try {
-      const res = await axios.get(url)
-      this.setState({ weather: res.data })
-    } catch (err) {
-      alert(err)
+  loadForecast = async (lat, lng) => {
+    if (lat != undefined && lng != undefined) {
+      try {
+        const res = await axios.get(forecastURL(this.state.host, lat, lng))
+        this.setState(res.data)
+      } catch (err) {
+        alert(err)
+      }
     }
   }
 }

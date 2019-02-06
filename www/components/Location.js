@@ -1,35 +1,49 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { Box } from 'rebass'
 import Title from './Title'
+import TextBoxCentered from './TextBoxCentered'
+import LocationInput from './LocationInput'
 
-/**
- * This component is also responsible for loading
- * location and weather data via the passed in container,
- * which should have a "load" function - see componentDidMount below
- *
- */
 export default class Location extends Component {
   static propTypes = {
     container: PropTypes.object.isRequired,
     host: PropTypes.string.isRequired,
   }
 
-  componentDidMount = () => {
-    // load initial location and weather data
-    this.props.container.load(this.props.host)
+  state = {
+    input: '',
+  }
+
+  static getDerivedStateFromProps(nextProps, prevState) {
+    if (!prevState.input) {
+      const { locationName } = nextProps.container.state
+      if (locationName && locationName.length > 0)
+        return { input: locationName }
+    }
+
+    return prevState
+  }
+
+  componentDidMount = async () => {
+    // load initial location data
+    await this.props.container.init(this.props.host)
+    this.props.container.loadFromBrowser()
+  }
+
+  onInput = e => {
+    this.setState({ input: e.target.value })
   }
 
   render() {
-    const { location } = this.props.container.state
+    const { locationName } = this.props.container.state
     return (
-      <Box w={1} py={2} bg="bgEm" color="contrast">
-        {location ? (
-          <Title>{location}</Title>
+      <TextBoxCentered w={1} py={2} bg="bgEm" color="contrast">
+        {locationName ? (
+          <LocationInput onChange={this.onInput} value={this.state.input} />
         ) : (
           <Title data-testid="loading-location">Loading...</Title>
         )}
-      </Box>
+      </TextBoxCentered>
     )
   }
 }

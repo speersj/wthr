@@ -9,16 +9,16 @@ const host = 'http://localhost:3000'
 
 describe('Location', () => {
   it('displays a loading element if location is not ready', () => {
-    const load = host => host
+    const init = host => host
     const { getByTestId } = render(
-      <Location host={host} container={{ state: {}, load }} />,
+      <Location host={host} container={{ state: {}, init }} />,
     )
     getByTestId('loading-location')
   })
 
-  it("calls the container's load function to retrieve location / weather", () => {
-    const load = jest.fn()
-    render(<Location host={host} container={{ state: {}, load }} />)
-    expect(load).toHaveBeenCalled()
+  it("calls the container's init function to retrieve location / weather", () => {
+    const init = jest.fn()
+    render(<Location host={host} container={{ state: {}, init }} />)
+    expect(init).toHaveBeenCalled()
   })
 })

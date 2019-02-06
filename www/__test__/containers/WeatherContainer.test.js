@@ -1,88 +1,21 @@
 import mockedAxios from 'axios'
 import WeatherContainer from '../../containers/WeatherContainer'
 
-describe('WeatherContainer', () => {
-  it('has empty values when instantiated', () => {
-    const emptyState = {
-      location: '',
-      weather: {
-        currently: {},
-        daily: {
-          data: [],
-        },
-      },
-    }
-
+describe('loadForecast', () => {
+  it('loads forecast data and saves it in its state', async () => {
     const container = new WeatherContainer()
+    const data = mockDarkskyData()
+    const host = 'localhost:3000'
+    const url = 'http://localhost:8010?lat=44.0521&lng=-123.0868'
 
-    expect(container.state).toEqual(emptyState)
-  })
+    mockedAxios.get.mockImplementationOnce(() => Promise.resolve({ data }))
+    await container.setState({ host })
+    await container.loadForecast(44.0521, -123.0868)
 
-  describe('getForecast', () => {
-    it('loads forecast data and saves it in its state', async () => {
-      const container = new WeatherContainer()
-      const data = mockDarkskyData()
-
-      // when deployed requests would be sent to:
-      // https://<domain.now.sh>/api/forecast?lat=45&lng=-122
-      // locally API endpoints run on a different port, 8010 for forecast API
-      const url = 'http://localhost:8010?lat=45&lng=-122'
-      mockedAxios.get.mockImplementationOnce(() => Promise.resolve({ data }))
-      await container.setState({ host: 'localhost:3000' })
-
-      await container.getForecast({ lat: 45, lng: -122 })
-
-      expect(mockedAxios.get).toHaveBeenCalled()
-      expect(mockedAxios.get).toHaveBeenCalledWith(url)
-      expect(container.state.weather).toEqual(data)
-    })
-  })
-
-  describe('reverseGeocode', () => {
-    it('calls the reverse-geocode API', async () => {
-      const location = { lat: 44.5646, lng: -123.262 }
-      const url = `http://localhost:8030?lat=${location.lat}&lng=${
-        location.lng
-      }`
-      const container = new WeatherContainer()
-      const data = mockReverseGeocodeData()
-      mockedAxios.get.mockImplementationOnce(() => Promise.resolve({ data }))
-
-      await container.setState({ host: 'localhost:3000 ', ...location })
-      await container.reverseGeocode()
-
-      expect(mockedAxios.get).toHaveBeenCalled()
-      expect(mockedAxios.get).toHaveBeenCalledWith(url)
-      expect(container.state.location).toEqual('Corvallis, Oregon')
-    })
+    expect(mockedAxios.get).toHaveBeenCalledWith(url)
+    expect(container.state).toEqual({ ...data, host })
   })
 })
-
-// sample response data from LocationIQ
-function mockReverseGeocodeData() {
-  return {
-    place_id: '331243605871',
-    osm_type: 'way',
-    osm_id: '20360349',
-    licence:
-      '© LocationIQ.com CC BY 4.0, Data © OpenStreetMap contributors, ODbL 1.0',
-    lat: '44.564656',
-    lon: '-123.262042',
-    display_name:
-      'Monroe Avenue, Corvallis, Benton County, Oregon, United States',
-    boundingbox: ['44.563835', '44.565998', '-123.267281', '-123.258805'],
-    importance: 0.225,
-    address: {
-      road: 'Monroe Avenue',
-      city: 'Corvallis',
-      county: 'Benton County',
-      state: 'Oregon',
-      country: 'United States',
-      country_code: 'us',
-      postcode: '97330',
-    },
-  }
-}
 
 // sample response data from darksky api
 function mockDarkskyData() {
