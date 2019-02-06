@@ -10,7 +10,8 @@ export default class LocationContainer extends Container {
 
   loadFromBrowser = () => {
     browserCoordinates(({ lat, lng }) => {
-      this.setLocation(lat, lng)
+      if (lat !== this.state.lat || lng !== this.state.lng)
+        this.setLocation(lat, lng)
     })
   }
 

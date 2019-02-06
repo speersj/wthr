@@ -10,9 +10,7 @@ export default class Location extends Component {
     host: PropTypes.string.isRequired,
   }
 
-  state = {
-    input: '',
-  }
+  state = { input: '' }
 
   static getDerivedStateFromProps(nextProps, prevState) {
     if (!prevState.input) {
@@ -26,12 +24,18 @@ export default class Location extends Component {
 
   componentDidMount = async () => {
     // load initial location data
-    await this.props.container.init(this.props.host)
-    this.props.container.loadFromBrowser()
+    const { init, loadFromBrowser } = this.props.container
+    await init(this.props.host)
+    loadFromBrowser()
   }
 
-  onInput = e => {
-    this.setState({ input: e.target.value })
+  onInput = e => this.setState({ input: e.target.value })
+  onBlur = () => this.setState({ hasFocus: false })
+  browserLocation = () => this.props.container.loadFromBrowser()
+
+  onFocus = e => {
+    e.target.select()
+    this.setState({ hasFocus: true })
   }
 
   render() {
@@ -39,7 +43,14 @@ export default class Location extends Component {
     return (
       <TextBoxCentered w={1} py={2} bg="bgEm" color="contrast">
         {locationName ? (
-          <LocationInput onChange={this.onInput} value={this.state.input} />
+          <LocationInput
+            onChange={this.onInput}
+            value={this.state.input}
+            onFocus={this.onFocus}
+            onBlur={this.onBlur}
+            hasFocus={this.state.hasFocus}
+            gps={this.browserLocation}
+          />
         ) : (
           <Title data-testid="loading-location">Loading...</Title>
         )}
