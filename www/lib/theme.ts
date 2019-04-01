@@ -1,26 +1,26 @@
 const primaryPalette = {
-  black: '#191a21',
-  white: '#f8f8f2',
-  grey: '#afb9c6',
-  gray: '#afb9c6',
-  red: '#ff3076',
-  green: '#50fa7b',
-  blue: '#6272a4',
-  cyan: '#8be9fd',
-  orange: '#ffbf36',
-  pink: '#ff79c6',
-  yellow: '#ffff36',
-  purple: '#bd93f9',
-}
+  black: "#191a21",
+  white: "#f8f8f2",
+  grey: "#afb9c6",
+  gray: "#afb9c6",
+  red: "#ff3076",
+  green: "#50fa7b",
+  blue: "#6272a4",
+  cyan: "#8be9fd",
+  orange: "#ffbf36",
+  pink: "#ff79c6",
+  yellow: "#ffff36",
+  purple: "#bd93f9",
+};
 
 export default {
-  breakpoints: ['40em', '52em', '64em'],
+  breakpoints: ["40em", "52em", "64em"],
   fontSizes: [12, 14, 16, 20, 24, 32, 48, 64],
   colors: {
     ...primaryPalette,
     bgMuted: primaryPalette.black,
-    bg: '#282a36',
-    bgEm: '#343746',
+    bg: "#282a36",
+    bgEm: "#343746",
 
     textMuted: primaryPalette.blue,
     text: primaryPalette.purple,
@@ -36,16 +36,16 @@ export default {
     sunny: primaryPalette.yellow,
     rainy: primaryPalette.cyan,
 
-    'clear-day': primaryPalette.yellow,
-    'clear-night': primaryPalette.white,
+    "clear-day": primaryPalette.yellow,
+    "clear-night": primaryPalette.white,
     rain: primaryPalette.cyan,
     snow: primaryPalette.white,
     sleet: primaryPalette.cyan,
     wind: primaryPalette.white,
     fog: primaryPalette.grey,
     cloudy: primaryPalette.white,
-    'partly-cloudy-day': primaryPalette.orange,
-    'partly-cloudy-night': primaryPalette.white,
+    "partly-cloudy-day": primaryPalette.orange,
+    "partly-cloudy-night": primaryPalette.white,
     hail: primaryPalette.blue,
     thunderstorm: primaryPalette.yellow,
     tornado: primaryPalette.red,
@@ -66,12 +66,12 @@ export default {
   },
   space: [0, 4, 8, 16, 32, 64, 128, 256],
   fonts: {
-    sans: 'system-ui, sans-serif',
-    mono: 'Menlo, monospace',
+    sans: "system-ui, sans-serif",
+    mono: "Menlo, monospace",
   },
   shadows: {
-    small: '0 0 4px rgba(0, 0, 0, .125)',
-    large: '0 0 24px rgba(0, 0, 0, .125)',
+    small: "0 0 4px rgba(0, 0, 0, .125)",
+    large: "0 0 24px rgba(0, 0, 0, .125)",
   },
   // later?
   // fontWeights: 0,
@@ -80,4 +80,4 @@ export default {
   // borders: 0,
   // radii: 0,
   // opacity: 0,
-}
+};
