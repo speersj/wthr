@@ -1,4 +1,4 @@
-export interface GPSCoordinates {
+export interface GeoLocation {
   lat: number;
   lng: number;
 }
@@ -10,7 +10,7 @@ export interface BrowserCoordinates {
   };
 }
 
-export const DEFAULTS: GPSCoordinates = { lat: 45.572222, lng: -122.682624 };
+export const DEFAULTS: GeoLocation = { lat: 45.572222, lng: -122.682624 };
 
 /**
  * converts browser supplied coordinates to internal { lat, lng } type
@@ -23,7 +23,7 @@ export function convertBrowserCoordinates(loc: BrowserCoordinates) {
  * Read coordinates from browser's navigator.geolocation
  */
 export function browserCoordinates(
-  cb: (x: GPSCoordinates) => void,
+  cb: (x: GeoLocation) => void,
   defaults = DEFAULTS,
 ) {
   const failFunc = () => cb(defaults);

@@ -34,11 +34,11 @@ describe("browserCoordinates", () => {
     const coords = { latitude: 45, longitude: -122 };
     const getCurrentPosition = jest
       .fn()
-      .mockImplementationOnce(cb => Promise.resolve(cb({ coords })));
+      .mockImplementationOnce((cb) => Promise.resolve(cb({ coords })));
 
     global.navigator.geolocation = { getCurrentPosition }; // eslint-disable-line
 
-    browserCoordinates(x => x);
+    browserCoordinates((x) => x);
     expect(getCurrentPosition).toHaveBeenCalled();
   });
 });
