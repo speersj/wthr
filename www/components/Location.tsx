@@ -20,12 +20,12 @@ interface Props {
  * which should have a "load" function - see componentDidMount below
  */
 class Location extends Component<Props> {
-  public componentDidMount() {
+  componentDidMount() {
     // load initial location and weather data
     this.props.container.load(this.props.host);
   }
 
-  public render() {
+  render() {
     const { location } = this.props.container.state;
     return (
       <Box py={2} bg="bgEm" color="contrast">

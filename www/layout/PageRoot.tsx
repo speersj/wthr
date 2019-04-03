@@ -23,9 +23,9 @@ interface Props {
 }
 
 export default class PageRoot extends Component<Props> {
-  public static defaultProps = { title: "wthr" };
+  static defaultProps = { title: "wthr" };
 
-  public render() {
+  render() {
     return (
       <ThemeProvider theme={theme}>
         <Provider>

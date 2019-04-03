@@ -37,15 +37,15 @@ interface ComponentState {
 }
 
 class Forecast extends Component<ComponentProps, ComponentState> {
-  public readonly state: ComponentState = { focusedData: emptyData() };
+  readonly state: ComponentState = { focusedData: emptyData() };
 
-  public componentDidUpdate(prevProps: ComponentProps) {
+  componentDidUpdate(prevProps: ComponentProps) {
     if (prevProps.data.length === 0 && this.props.data.length > 0) {
       this.setState({ focusedData: this.props.data[0] });
     }
   }
 
-  public render() {
+  render() {
     return (
       <>
         <Flex
