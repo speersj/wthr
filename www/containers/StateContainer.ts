@@ -16,7 +16,7 @@ export interface StateContainerInterface {
 }
 
 export default class StateContainer extends Container<StateContainerInterface> {
-  public state: StateContainerInterface = {
+  state: StateContainerInterface = {
     host: "",
     lat: 0,
     lng: 0,
@@ -29,7 +29,7 @@ export default class StateContainer extends Container<StateContainerInterface> {
    * or from browser location, then load weather data
    *
    */
-  public load = async (host: string) => {
+  load = async (host: string) => {
     await this.setState({ host });
     const { lat, lng, location } = this.localStorageLoad();
 
@@ -42,7 +42,7 @@ export default class StateContainer extends Container<StateContainerInterface> {
   };
 
   // callback for setting location from browser
-  public setLocationFromBrowser = async (location: GeoLocation) => {
+  setLocationFromBrowser = async (location: GeoLocation) => {
     await this.setState(location);
     this.getForecast(location);
     await this.reverseGeocode();
@@ -51,7 +51,7 @@ export default class StateContainer extends Container<StateContainerInterface> {
 
   // sets this.state.location by calling reverse-geocode api endpoint
   // with this.state.lat & this.state.lng
-  public reverseGeocode = async () => {
+  reverseGeocode = async () => {
     const { lat, lng } = this.state;
     const res = await axios.get(reverseGeocodeURL(this.state.host, lat, lng));
     const { city, state, county } = res.data.address;
@@ -61,7 +61,7 @@ export default class StateContainer extends Container<StateContainerInterface> {
   /**
    * Loads previously saved values from local storage
    */
-  public localStorageLoad = () => {
+  localStorageLoad = () => {
     if (LOCALSTORAGE_ENABLED) {
       const { lat, lng, location } = localStorage;
       return { lat, lng, location };
@@ -73,13 +73,13 @@ export default class StateContainer extends Container<StateContainerInterface> {
   /**
    * Saves state (lat, lng, location) to localStorage
    */
-  public localStorageSave = () => {
+  localStorageSave = () => {
     localStorage.lat = this.state.lat;
     localStorage.lng = this.state.lng;
     localStorage.location = this.state.location;
   };
 
-  public getForecast = async ({ lat, lng }: GeoLocation) => {
+  getForecast = async ({ lat, lng }: GeoLocation) => {
     const url = forecastURL(this.state.host, lat, lng);
     try {
       const res = await axios.get(url);

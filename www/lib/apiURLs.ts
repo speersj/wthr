@@ -38,6 +38,6 @@ export function reverseGeocodeURL(host = "", lat: number, lng: number) {
     : `https://${host}/api/reverse-geocode${queryParams}`;
 }
 
-function isLocalhost(host) {
+function isLocalhost(host: string) {
   return host.indexOf("localhost") !== -1;
 }

@@ -16,7 +16,7 @@ import TitleBig from "./TitleBig";
 import UVIndex from "./UVIndex";
 import WeatherIcon from "./WeatherIcon";
 
-interface Props {
+export interface Props {
   time: number; // unix time
   summary: string;
   icon: string;
@@ -132,12 +132,7 @@ const DailyForecast = (props: Props) => {
         <Cell width={1 / 3}>
           <TextSmall>Visibility</TextSmall>
 
-          <TextSmall>
-            {() => {
-              const vis = Math.round(props.visibility);
-              return vis >= 10 ? "> 10 miles" : `${vis} miles`;
-            }}
-          </TextSmall>
+          <TextSmall>{renderVisibility(props.visibility)}</TextSmall>
         </Cell>
 
         <Cell width={1 / 3}>
@@ -149,5 +144,10 @@ const DailyForecast = (props: Props) => {
     </Box>
   );
 };
+
+function renderVisibility(visibility: number) {
+  const vis = Math.round(visibility);
+  return vis >= 10 ? "> 10 miles" : `${vis} miles`;
+}
 
 export default DailyForecast;

@@ -27,13 +27,14 @@ describe("wind", () => {
   });
 
   it("renders humidity as a percentage", () => {
-    const pct = wsb().getByText("Humidity").firstElementChild.textContent;
+    const pct = (wsb().getByText("Humidity").firstElementChild as Element)
+      .textContent;
     expect(pct).toEqual("80%");
   });
 
   it("renders dew point as a temperature", () => {
     const el = wsb().getByText("Dew Pt");
-    expect(el.firstElementChild.textContent).toEqual("45˚");
+    expect((el.firstElementChild as Element).textContent).toEqual("45˚");
   });
 
   it("renders the UV Index", () => {

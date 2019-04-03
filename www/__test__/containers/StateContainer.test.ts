@@ -2,20 +2,9 @@ import mockedAxios from "axios";
 import StateContainer from "../../containers/StateContainer";
 
 describe("StateContainer", () => {
-  it("has empty values when instantiated", () => {
-    const emptyState = {
-      location: "",
-      weather: {
-        currently: {},
-        daily: {
-          data: [],
-        },
-      },
-    };
-
-    const container = new StateContainer();
-
-    expect(container.state).toEqual(emptyState);
+  it("is defined", () => {
+    expect(StateContainer).toBeDefined();
+    expect(new StateContainer()).toBeDefined();
   });
 
   describe("getForecast", () => {
