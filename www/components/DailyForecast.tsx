@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from "react";
+import React from "react";
 import { Box, Flex, Text } from "rebass";
 import { toDate, toDayOfWeek, toTime } from "../lib/dateTime";
 import { capitalize } from "../lib/utils";
@@ -44,7 +44,7 @@ interface Props {
   visibility: number; // up to 10 miles
 }
 
-const DailyForecast: FunctionComponent<Props> = (props: Props) => {
+const DailyForecast = (props: Props) => {
   const { time } = props;
 
   if (!time && time !== 0) {

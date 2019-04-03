@@ -14,7 +14,7 @@ interface Props {
   };
 }
 
-const CurrentConditions: React.FC<Props> = (props) => {
+const CurrentConditions = (props: Props) => {
   const isLoaded = props.forecastSummary && props.forecastSummary.length > 0;
   const { conditions } = props;
   return (

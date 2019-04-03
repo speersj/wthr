@@ -1,11 +1,7 @@
-import React, { FunctionComponent, ReactNode } from "react";
+import React, { ReactNode } from "react";
 import { Box } from "rebass";
 
-interface Props {
-  children: ReactNode;
-}
-
-const Footer: FunctionComponent<Props> = ({ children }) => (
+const Footer = ({ children }: { children: ReactNode }) => (
   <Box
     width={1}
     css={{

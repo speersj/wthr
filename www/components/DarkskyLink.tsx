@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from "react";
+import React from "react";
 import { Link } from "rebass";
 import styled from "styled-components";
 
@@ -11,7 +11,7 @@ const StyledLink = styled(Link)`
   }
 `;
 
-const DarkSkyLink: FunctionComponent = (props) => {
+const DarkSkyLink = (props: any) => {
   return (
     <StyledLink
       {...props}

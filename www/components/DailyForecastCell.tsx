@@ -1,4 +1,4 @@
-import React, { FunctionComponent, ReactNode } from "react";
+import React, { ReactNode } from "react";
 import TextBoxCentered from "./TextBoxCentered";
 
 interface T {
@@ -7,7 +7,7 @@ interface T {
   children: ReactNode;
 }
 
-const DailyForecastCell: FunctionComponent<T> = (props: T) => (
+const DailyForecastCell = (props: T) => (
   <TextBoxCentered width={1 / 3} fontSize={[3, 4]} {...props} my={3}>
     {props.children}
   </TextBoxCentered>
