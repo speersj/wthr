@@ -13,7 +13,7 @@ module.exports = {
     "^.+\\.(ts|tsx)$": "ts-jest",
   },
   testRegex: "(/__tests__/.*|(\\.|/)(test|spec))\\.tsx?$",
-  setupTestFrameworkScriptFile: require.resolve("./jest.setup.js"),
+  setupFilesAfterEnv: [require.resolve("./jest.setup.js")],
   testPathIgnorePatterns: ["./.next/", "./node_modules/"],
   globals: {
     "ts-jest": {
