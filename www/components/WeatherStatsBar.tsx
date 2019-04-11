@@ -7,22 +7,11 @@ import Temperature from "./Temperature";
 import TextBoxCentered from "./TextBoxCentered";
 import TextSmall from "./TextSmall";
 import UVIndex from "./UVIndex";
+import { ForecastAPICurrently } from "../lib/ForecastAPIResponse";
 
-interface Props {
-  dewPoint: number;
-  humidity: number;
-  uvIndex: number;
-  windBearing: number;
-  windSpeed: number;
+interface Props extends ForecastAPICurrently {
+  title: string;
 }
-
-WeatherStatsBar.defaultProps = {
-  dewPoint: 0,
-  humidity: 0,
-  uvIndex: 0,
-  windBearing: 0,
-  windSpeed: 0,
-};
 
 export default function WeatherStatsBar(props: Props) {
   const { windSpeed, windBearing, humidity, dewPoint, uvIndex } = props;

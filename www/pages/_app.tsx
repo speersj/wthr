@@ -2,7 +2,13 @@ import React from "react";
 import App, { Container } from "next/app";
 
 export default class MyApp extends App {
-  static async getInitialProps({ Component, router, ctx }) {
+  static async getInitialProps({
+    Component,
+    ctx,
+  }: {
+    Component: any;
+    ctx: any;
+  }) {
     const host = ctx.req.headers.host;
     let pageProps = { host };
 

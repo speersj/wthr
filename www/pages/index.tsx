@@ -2,36 +2,51 @@ import React from "react";
 import { Subscribe } from "unstated";
 
 import PageRoot from "../layout/PageRoot";
-import StateContainer from "../containers/StateContainer";
 import Location from "../components/Location";
 import WeatherStatsBar from "../components/WeatherStatsBar";
 import CurrentConditions from "../components/CurrentConditions";
 import Forecast from "../components/Forecast";
+import LocationContainer from "../containers/LocationContainer";
+import ForecastContainer from "../containers/ForecastContainer";
+import TextBoxCentered from "../components/TextBoxCentered";
 
-export default function Index(props: { host: string }) {
+export default function Index({ host }: { host: string }) {
   return (
     <PageRoot title="wthr">
-      <Subscribe to={[StateContainer]}>
-        {(container) => {
-          const { weather } = container.state;
-          const summary = (weather.daily && weather.daily.summary) || "";
-          const dailyData = (weather.daily && weather.daily.data) || [];
-          return (
-            <>
-              <Location container={container as StateContainer} {...props} />
-              <WeatherStatsBar
-                title={container.state.location}
-                {...container.state.weather.currently}
-              />
+      <Subscribe to={[LocationContainer, ForecastContainer]}>
+        {(location: LocationContainer, forecast: ForecastContainer) => {
+          if (!location.isReady) {
+            location.init(host).then(location.loadCurrentLocation);
+          }
 
-              <CurrentConditions
-                conditions={container.state.weather.currently}
-                forecastSummary={summary}
-              />
+          if (!forecast.isReady) {
+            forecast.init(host).then(() => {
+              forecast.load(location.coords).catch((err) => {
+                alert(`Error loading forecast: ${err}`);
+              });
+            });
+          }
 
-              <Forecast data={dailyData.slice(0, 6)} />
-            </>
-          );
+          if (forecast.isLoaded) {
+            return (
+              <>
+                <Location container={location} />
+                <WeatherStatsBar
+                  title={location.locationName}
+                  {...forecast.currently}
+                />
+
+                <CurrentConditions
+                  forecastSummary={forecast.daily.summary}
+                  conditions={forecast.currently}
+                />
+
+                <Forecast data={forecast.dailyData.slice(0, 6)} />
+              </>
+            );
+          } else {
+            return <TextBoxCentered>🌈🌈🌈 Loading... 🌈🌈🌈 </TextBoxCentered>;
+          }
         }}
       </Subscribe>
     </PageRoot>

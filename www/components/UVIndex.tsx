@@ -1,6 +1,6 @@
 import React from "react";
 import { Text } from "rebass";
-import { between } from "../lib/utils";
+import { ensureWithin } from "../lib/utils";
 
 export default function UVIndex(props: { uvIndex: number }) {
   const { uvIndex } = props;
@@ -13,5 +13,5 @@ export default function UVIndex(props: { uvIndex: number }) {
  * https://www.epa.gov/sunsafety/uv-index-scale-1
  */
 export function uvColor(uv: number) {
-  return { color: `uvColor${between(uv, 0, 12)}` };
+  return { color: `uvColor${ensureWithin(uv, 0, 12)}` };
 }

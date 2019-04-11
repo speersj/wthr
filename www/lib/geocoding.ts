@@ -1,38 +1,39 @@
-export interface GeoLocation {
+export interface ICoords {
   lat: number;
   lng: number;
 }
 
-export interface BrowserCoordinates {
+export interface IBrowserCoords {
   coords: {
     latitude: number;
     longitude: number;
   };
 }
 
-export const DEFAULTS: GeoLocation = { lat: 45.572222, lng: -122.682624 };
+export const DEFAULTS: ICoords = { lat: 45.572222, lng: -122.682624 };
 
 /**
  * converts browser supplied coordinates to internal { lat, lng } type
  */
-export function convertBrowserCoordinates(loc: BrowserCoordinates) {
+export function convertBrowserCoordinates(loc: IBrowserCoords): ICoords {
   return { lat: loc.coords.latitude, lng: loc.coords.longitude };
 }
 
 /**
- * Read coordinates from browser's navigator.geolocation
+ * Read coordinates from browser's geolocation API
  */
 export function browserCoordinates(
-  cb: (x: GeoLocation) => void,
-  defaults = DEFAULTS,
+  options: {
+    enableHighAccuracy?: boolean;
+    maximumAge?: number;
+    timeout?: number;
+  } = {},
 ) {
-  const failFunc = () => cb(defaults);
-  const successFunc = (loc: BrowserCoordinates) =>
-    cb(convertBrowserCoordinates(loc));
-
-  if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(successFunc, failFunc);
-  } else {
-    failFunc();
-  }
+  return new Promise<ICoords>((resolve, reject) => {
+    window.navigator.geolocation.getCurrentPosition(
+      (position) => resolve(convertBrowserCoordinates(position)),
+      (error) => reject(error),
+      options,
+    );
+  });
 }

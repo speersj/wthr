@@ -1,42 +1,21 @@
-import React, { Component } from "react";
+import React from "react";
 import { Box } from "rebass";
 
-import StateContainer from "../containers/StateContainer";
 import Title from "./Title";
+import LocationContainer from "../containers/LocationContainer";
 
 interface Props {
-  container: StateContainer;
-  // {
-  //   location: string;
-  //   state: StateContainerInterface;
-  //   load(host: string): void;
-  // };
-  host: string;
+  container: LocationContainer;
 }
 
-/**
- * This component is also responsible for loading
- * location and weather data via the passed in container,
- * which should have a "load" function - see componentDidMount below
- */
-class Location extends Component<Props> {
-  componentDidMount() {
-    // load initial location and weather data
-    this.props.container.load(this.props.host);
-  }
-
-  render() {
-    const { location } = this.props.container.state;
-    return (
-      <Box py={2} bg="bgEm" color="contrast">
-        {location ? (
-          <Title>{location}</Title>
-        ) : (
-          <Title data-testid="loading-location">Loading...</Title>
-        )}
-      </Box>
-    );
-  }
+export default function Location(props: Props) {
+  return (
+    <Box py={2} bg="bgEm" color="contrast">
+      {location ? (
+        <Title>{props.container.locationName}</Title>
+      ) : (
+        <Title data-testid="loading-location">Loading...</Title>
+      )}
+    </Box>
+  );
 }
-
-export default Location;

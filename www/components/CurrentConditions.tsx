@@ -3,15 +3,11 @@ import { Heading, Text } from "rebass";
 import Temperature from "./Temperature";
 import TextBoxCentered from "./TextBoxCentered";
 import WeatherIcon from "./WeatherIcon";
+import { ForecastAPICurrently } from "../lib/ForecastAPIResponse";
 
 interface Props {
   forecastSummary: string;
-  conditions: {
-    summary: string;
-    icon: string;
-    temperature: number;
-    apparentTemperature: number;
-  };
+  conditions: ForecastAPICurrently;
 }
 
 const CurrentConditions = (props: Props) => {
