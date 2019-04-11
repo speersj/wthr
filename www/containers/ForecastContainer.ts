@@ -28,10 +28,7 @@ export default class ForecastContainer extends Container<
    * sets host name and loads previously cached forecast from
    * localStorage if data exists
    */
-  init = async (hostName: string) => {
-    await this.setState({ hostName });
-    return this.loadFromCacheIfExists();
-  };
+  init = async (hostName: string) => this.setState({ hostName });
 
   get isReady() {
     return this.state.hostName.length > 0;
@@ -93,30 +90,10 @@ export default class ForecastContainer extends Container<
       );
     }
 
-    this.cacheToLocalStorage({ ...response.data });
-
     return this.setState((prevState) => ({
       ...prevState,
       isLoaded: true,
       forecast,
     }));
-  };
-
-  private cacheToLocalStorage = (data: ForecastAPIResponse) => {
-    window.localStorage.setItem("forecast", JSON.stringify(data));
-  };
-
-  private loadFromCacheIfExists = () => {
-    const cached = window.localStorage.getItem("forecast");
-    if (cached) {
-      const forecast = JSON.parse(cached);
-      return this.setState((prevState) => ({
-        ...prevState,
-        isLoaded: true,
-        forecast,
-      }));
-    }
-
-    return Promise.resolve();
   };
 }

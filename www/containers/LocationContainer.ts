@@ -92,7 +92,10 @@ export default class LocationContainer extends Container<
     }
 
     return this.setState((prevState) => ({ ...prevState, ...location })).then(
-      () => this.cacheLocation(this.state),
+      () => {
+        const { name, coords } = this.state;
+        this.cacheLocation({ name, coords });
+      },
     );
   };
 
@@ -142,7 +145,22 @@ export default class LocationContainer extends Container<
   private loadCachedOrDefaults = (): ILocationState => {
     if (this.isCached()) {
       const location = window.localStorage.getItem("location");
-      if (location) return JSON.parse(location);
+
+      if (location) {
+        const parsed = JSON.parse(location);
+        // ensure cache is valid as it's gone through some changes
+        if (
+          parsed &&
+          "name" in parsed &&
+          "coords" in parsed &&
+          "lat" in parsed.coords &&
+          "lng" in parsed.coords
+        ) {
+          return parsed;
+        } else {
+          window.localStorage.clear();
+        }
+      }
     }
 
     return { ...DEFAULT_LOCATION };
