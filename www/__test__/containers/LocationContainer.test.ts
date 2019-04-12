@@ -131,10 +131,10 @@ describe("LocationContainer", () => {
       expect(lc.locationName).toEqual("Utopia");
     });
 
-    it("sets the location name as ??? if reverse geocoding fails", async () => {
+    it("sets the location name as 'Unknown' if reverse geocoding fails", async () => {
       const container = new LocationContainer();
       await container.setLocation({ lat: 45, lng: 90 });
-      expect(container.locationName).toEqual("???");
+      expect(container.locationName).toEqual("Unknown");
     });
 
     it("sets the location name using reverse-geocode api", async () => {

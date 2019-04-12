@@ -19,7 +19,7 @@ interface IReverseGeocodeResponse {
 
 /** if all else fails! */
 const DEFAULT_LOCATION: ILocationState = {
-  name: "",
+  name: "Loading...",
   coords: { lat: 45.5155, lng: -122.6793 } as ICoords,
 };
 
@@ -53,8 +53,7 @@ export default class LocationContainer extends Container<
   }
 
   get locationName() {
-    const { name } = this.state;
-    return name.length > 0 ? name : "???";
+    return this.state.name;
   }
 
   /** Use in case of emergency (can't figure out location?) */
@@ -93,7 +92,7 @@ export default class LocationContainer extends Container<
     let name = locationName;
 
     if (locationName.length === 0) {
-      name = await this.reverseGeocode(coords).catch(() => "");
+      name = await this.reverseGeocode(coords).catch(() => "Unknown");
     }
 
     return this.setState((prevState) => ({ ...prevState, name, coords }));
