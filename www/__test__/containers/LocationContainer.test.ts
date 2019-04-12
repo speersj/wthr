@@ -2,7 +2,6 @@ import mockedAxios from "axios";
 import LocationContainer, {
   getDefaults,
 } from "../../containers/LocationContainer";
-import { lchmod } from "fs";
 
 const mockCurrentPosition = (window as any).navigator.geolocation
   .mockCurrentPosition;
