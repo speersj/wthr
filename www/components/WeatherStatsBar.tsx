@@ -17,7 +17,7 @@ export default function WeatherStatsBar(props: Props) {
   const { windSpeed, windBearing, humidity, dewPoint, uvIndex } = props;
 
   return (
-    <Box width={1} bg="bgEm" fontSize={[1, 2]} color="text" p={1}>
+    <Box width={1} bg="bgEm" fontSize={[1, 2]} color="text" p={3}>
       <Flex alignItems="center" justifyContent="space-evenly">
         <TextBoxCentered width={1 / 4}>
           <TextSmall>Winds</TextSmall>

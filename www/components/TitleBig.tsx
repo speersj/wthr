@@ -6,7 +6,7 @@ export default function TitleBig(props: HeadingProps) {
     <Heading
       fontSize={[5, 6]}
       textAlign="center"
-      py={2}
+      py={3}
       color="textEm"
       {...props}
     >
