@@ -18,12 +18,18 @@ function isValid(cache: any) {
 }
 
 function clear() {
-  window.localStorage.removeItem("location");
+  try {
+    window.localStorage.removeItem("location");
+  } catch {}
 }
 
 function isCached() {
-  const location = window.localStorage.getItem("location");
-  return !!location && isValid(JSON.parse(location));
+  try {
+    const location = window.localStorage.getItem("location");
+    return !!location && isValid(JSON.parse(location));
+  } catch {
+    return false;
+  }
 }
 
 function load(): ILocationState | undefined {
@@ -33,7 +39,9 @@ function load(): ILocationState | undefined {
 }
 
 function save(location: ILocationState) {
-  if (isValid(location)) {
-    window.localStorage.setItem("location", JSON.stringify(location));
-  }
+  try {
+    if (isValid(location)) {
+      window.localStorage.setItem("location", JSON.stringify(location));
+    }
+  } catch {}
 }
