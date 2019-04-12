@@ -18,6 +18,7 @@ class Forecast extends Component<Props, State> {
 
   render() {
     const { focusedData } = this.state;
+
     return (
       <>
         <Flex
@@ -39,7 +40,9 @@ class Forecast extends Component<Props, State> {
           ))}
         </Flex>
         <Box py={3} width={1} bg="bg">
-          <DailyForecast {...focusedData as ForecastAPIDailyData} />
+          {focusedData && (
+            <DailyForecast {...focusedData as ForecastAPIDailyData} />
+          )}
         </Box>
       </>
     );
