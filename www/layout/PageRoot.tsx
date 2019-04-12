@@ -3,16 +3,17 @@ import React, { Component, ReactNode } from "react";
 import { createGlobalStyle, ThemeProvider } from "styled-components";
 import { Provider } from "unstated";
 
-import DarkskyLink from "../components/DarkskyLink";
-import Footer from "../components/Footer";
 import theme from "../lib/theme";
 import PageLayout from "./PageLayout";
 import ContentLayout from "./ContentLayout";
 
 const GlobalStyle = createGlobalStyle`
-  body {
-    background-color: ${theme.colors.bg};
+  html, body {
+    height: 100%;
     margin: 0px;
+  }
+  body {
+    background-color: #282A36;
     * { box-sizing: border-box };
   }
 `;
@@ -41,9 +42,6 @@ export default class PageRoot extends Component<Props> {
           <PageLayout>
             <GlobalStyle />
             <ContentLayout>{this.props.children}</ContentLayout>
-            <Footer>
-              <DarkskyLink />
-            </Footer>
           </PageLayout>
         </Provider>
       </ThemeProvider>

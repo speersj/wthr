@@ -8,7 +8,10 @@ import CurrentConditions from "../components/CurrentConditions";
 import Forecast from "../components/Forecast";
 import LocationContainer from "../containers/LocationContainer";
 import ForecastContainer from "../containers/ForecastContainer";
-import TextBoxCentered from "../components/TextBoxCentered";
+import Loading from "../components/Loading";
+import Footer from "../components/Footer";
+import DarkSkyLink from "../components/DarkskyLink";
+import SplashScreen from "../layout/SplashScreen";
 
 export default function Index({ host }: { host: string }) {
   return (
@@ -16,7 +19,7 @@ export default function Index({ host }: { host: string }) {
       <Subscribe to={[LocationContainer, ForecastContainer]}>
         {(location: LocationContainer, forecast: ForecastContainer) => {
           if (!location.isReady) {
-            location.init(host).then(location.loadCurrentLocation);
+            location.init(host).then(() => location.loadCurrentLocation(false));
           }
 
           if (!forecast.isReady) {
@@ -42,10 +45,18 @@ export default function Index({ host }: { host: string }) {
                 />
 
                 <Forecast data={forecast.dailyData.slice(0, 6)} />
+
+                <Footer>
+                  <DarkSkyLink />
+                </Footer>
               </>
             );
           } else {
-            return <TextBoxCentered>🌈🌈🌈 Loading... 🌈🌈🌈 </TextBoxCentered>;
+            return (
+              <SplashScreen>
+                <Loading text="🌈 Loading wthr... 🌈" />;
+              </SplashScreen>
+            );
           }
         }}
       </Subscribe>

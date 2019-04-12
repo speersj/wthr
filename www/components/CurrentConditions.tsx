@@ -14,7 +14,7 @@ const CurrentConditions = (props: Props) => {
   const isLoaded = props.forecastSummary && props.forecastSummary.length > 0;
   const { conditions } = props;
   return (
-    <TextBoxCentered px={3} py={4} width={1} mx="auto">
+    <TextBoxCentered px={3} py={4} width={1} mx="auto" bg="bg">
       <Heading py={3} fontSize={[5, 6]} color={conditions && conditions.icon}>
         {isLoaded ? <WeatherIcon name={conditions.icon} /> : "🌈"}
         <span data-testid="test-temp">

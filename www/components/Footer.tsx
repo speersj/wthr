@@ -4,6 +4,7 @@ import { Box } from "rebass";
 const Footer = ({ children }: { children: ReactNode }) => (
   <Box
     width={1}
+    bg="bg"
     css={{
       bottom: 0,
       height: "4rem",

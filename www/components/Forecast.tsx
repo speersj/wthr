@@ -26,6 +26,7 @@ class Forecast extends Component<ComponentProps, ComponentState> {
           justifyContent="space-between"
           alignItems="center"
           p={2}
+          bg="bg"
         >
           {this.props.data.map((day) => (
             <ForecastThumbnail
@@ -38,7 +39,7 @@ class Forecast extends Component<ComponentProps, ComponentState> {
             />
           ))}
         </Flex>
-        <Box my={3} width={1}>
+        <Box py={3} width={1} bg="bg">
           {this.isLoaded && (
             <DailyForecast {...focusedData as ForecastAPIDailyData} />
           )}
