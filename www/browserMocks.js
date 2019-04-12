@@ -1,4 +1,6 @@
 //browserMocks.js
+var coords = { latitude: 90, longitude: 90 };
+
 Object.defineProperty(window, "localStorage", {
   value: (() => {
     let store = {};
@@ -16,3 +18,22 @@ Object.defineProperty(window, "localStorage", {
     };
   })(),
 });
+
+Object.defineProperty(window, "navigator", {
+  value: {
+    geolocation: {
+      getCurrentPosition,
+      mockCurrentPosition,
+    },
+  },
+});
+
+function mockCurrentPosition(
+  currentPosition = { latitude: 90, longitude: 90 },
+) {
+  coords = { ...currentPosition };
+}
+
+function getCurrentPosition(successFunc, errorFunc, options = {}) {
+  successFunc({ coords });
+}

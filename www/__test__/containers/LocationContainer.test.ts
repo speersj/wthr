@@ -2,7 +2,10 @@ import mockedAxios from "axios";
 import LocationContainer, {
   getDefaults,
 } from "../../containers/LocationContainer";
-import { setGeoAPIMock, clearGeoAPIMock } from "../lib/geoAPIMock";
+import { lchmod } from "fs";
+
+const mockCurrentPosition = (window as any).navigator.geolocation
+  .mockCurrentPosition;
 
 describe("LocationContainer", () => {
   it("is defined", () => {
@@ -15,6 +18,39 @@ describe("LocationContainer", () => {
       const container = new LocationContainer();
       await container.init("test.com");
       expect(container.state.hostName).toEqual("test.com");
+    });
+
+    it("loads location from localStorage cache", async () => {
+      window.localStorage.setItem(
+        "location",
+        JSON.stringify({
+          name: "Portland",
+          coords: { lat: 45, lng: -122 },
+        }),
+      );
+
+      const container = new LocationContainer();
+      await container.init("test.com");
+      expect(container.state.name).toEqual("Portland");
+      expect(container.state.coords).toEqual({ lat: 45, lng: -122 });
+    });
+
+    it("sets default location upon instantiation", () => {
+      const defaults = getDefaults();
+      expect(new LocationContainer().state.name).toEqual(defaults.name);
+      expect(new LocationContainer().state.coords).toEqual(defaults.coords);
+    });
+  });
+
+  describe("isReady", () => {
+    it("returns false if hostName has not been set", () => {
+      expect(new LocationContainer().isReady).toBeFalsy();
+    });
+
+    it("returns true if hostName has been set", async () => {
+      const lc = new LocationContainer();
+      await lc.init("hostname");
+      expect(lc.isReady).toBeTruthy();
     });
   });
 
@@ -37,34 +73,10 @@ describe("LocationContainer", () => {
   describe("loadCurrentLocation", () => {
     beforeEach(() => {
       window.localStorage.clear();
-      clearGeoAPIMock();
-    });
-
-    it("loads defaults if localStorage/browser are not available", async () => {
-      const container = new LocationContainer();
-      await container.loadCurrentLocation();
-      await container.init("test.com");
-      expect(container.state).toEqual({
-        ...getDefaults(),
-        hostName: "test.com",
-      });
-    });
-
-    it("loads from local storage if available", async () => {
-      const container = new LocationContainer();
-      const coords = { lat: 90, lng: 120 };
-      const cached = JSON.stringify({ name: "Somewhere", coords });
-
-      window.localStorage.setItem("location", cached);
-      container.init("hostname");
-      await container.loadCurrentLocation();
-
-      expect(container.coords).toEqual(coords);
-      expect(container.state.name).toEqual("Somewhere");
     });
 
     it("loads browser GPS and reverse geocodes results to get location name", async () => {
-      setGeoAPIMock({ latitude: 30, longitude: 60 });
+      mockCurrentPosition({ latitude: 30, longitude: 60 });
       const data = mockReverseGeocodeData();
       (mockedAxios.get as jest.Mock).mockImplementationOnce(() =>
         Promise.resolve({ data }),
@@ -80,18 +92,48 @@ describe("LocationContainer", () => {
         "https://hostname/api/reverse-geocode?lat=30&lng=60",
       );
     });
+
+    it("does not update state if gps location is close enough to current state", async () => {
+      const lc = new LocationContainer();
+      lc.init("hostname");
+      await lc.setState((prevState) => ({
+        ...prevState,
+        coords: { lat: 45, lng: 90 },
+      }));
+      mockCurrentPosition({ latitude: 45.001, longitude: 90.0001 });
+      await lc.loadCurrentLocation();
+      expect(lc.state.coords).toEqual({ lat: 45, lng: 90 });
+    });
+
+    it("updates state even if close enough when force = true", async () => {
+      const lc = new LocationContainer();
+      lc.init("hostname");
+      await lc.setState((prevState) => ({
+        ...prevState,
+        coords: { lat: 45, lng: 90 },
+      }));
+      mockCurrentPosition({ latitude: 45.001, longitude: 90.0001 });
+      await lc.loadCurrentLocation(true);
+      expect(lc.state.coords).toEqual({ lat: 45.001, lng: 90.0001 });
+    });
   });
 
-  describe("loadCoords", () => {
+  describe("setLocation", () => {
     it("sets coordinates", async () => {
       const container = new LocationContainer();
-      await container.loadCoords({ lat: 45, lng: 90 });
+      await container.setLocation({ lat: 45, lng: 90 });
       expect(container.coords).toEqual({ lat: 45, lng: 90 });
+    });
+
+    it("sets the location name", async () => {
+      const lc = new LocationContainer();
+      await lc.setLocation({ lat: 45, lng: 90 }, "Utopia");
+      expect(lc.locationName).toEqual("Utopia");
     });
 
     it("sets the location name as ??? if reverse geocoding fails", async () => {
       const container = new LocationContainer();
-      await container.loadCoords({ lat: 45, lng: 90 });
+      await container.setLocation({ lat: 45, lng: 90 });
       expect(container.locationName).toEqual("???");
     });
 
@@ -102,7 +144,7 @@ describe("LocationContainer", () => {
       );
       const container = new LocationContainer();
       await container.init("hostname");
-      await container.loadCoords({ lat: 45, lng: 99 });
+      await container.setLocation({ lat: 45, lng: 99 });
 
       expect(mockedAxios.get).toHaveBeenCalledWith(
         "https://hostname/api/reverse-geocode?lat=45&lng=99",
@@ -118,7 +160,7 @@ describe("LocationContainer", () => {
       );
       const container = new LocationContainer();
       await container.init("hostname");
-      await container.loadCoords({ lat: 45, lng: 99 });
+      await container.setLocation({ lat: 45, lng: 99 });
 
       expect(mockedAxios.get).toHaveBeenCalledWith(
         "https://hostname/api/reverse-geocode?lat=45&lng=99",

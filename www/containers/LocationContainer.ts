@@ -1,8 +1,8 @@
 import axios from "axios";
-import { browserCoordinates, ICoords } from "../lib/geocoding";
-import { isBetween } from "../lib/utils";
+import { browserCoordinates, ICoords, isCloseEnough } from "../lib/geocoding";
 import { Container } from "unstated";
 import { reverseGeocodeURL } from "../lib/apiURLs";
+import cache from "./cache/locationCache";
 
 type HostName = { hostName: string };
 
@@ -17,12 +17,6 @@ interface IReverseGeocodeResponse {
   county?: string;
 }
 
-/**
- * Value for determing whether to do a reverse-geocode lookup
- * if lat/lng are with +/- this amount, use cached location name
- */
-const CLOSE_ENOUGH = 0.01;
-
 /** if all else fails! */
 const DEFAULT_LOCATION: ILocationState = {
   name: "",
@@ -30,8 +24,6 @@ const DEFAULT_LOCATION: ILocationState = {
 };
 
 /**
- * returns defaults to be used if localStorage
- * cache & browser geolocation are not available
  * exported for testing purposes
  */
 export function getDefaults(): ILocationState {
@@ -48,9 +40,10 @@ export default class LocationContainer extends Container<
 > {
   state: ILocationState & HostName = { ...DEFAULT_LOCATION, hostName: "" };
 
-  /** set the hostname to be used for api requests */
-  init = (hostName: string) => this.setState({ hostName });
+  /** set hostname for api requests and loads cached location if available */
+  init = (hostName: string) => this.setState({ hostName, ...cache.load() });
 
+  /** ready for API requests? (hack) */
   get isReady() {
     return this.state.hostName.length > 0;
   }
@@ -64,109 +57,64 @@ export default class LocationContainer extends Container<
     return name.length > 0 ? name : "???";
   }
 
+  /** Use in case of emergency (can't figure out location?) */
+  loadDefaults() {
+    return this.setState({ ...DEFAULT_LOCATION });
+  }
+
   /**
    * Loads current location from localStorage / navigator.geolocation.
-   *
-   * If cached location data exists and it's "close enough" to browser's
-   * geolocation, use that.
-   *
-   * If no cached location data exists, compare defaults to browser's geolocation.
-   * If no cached location data exists & browser geolocation fails, use defaults.
-   *
+   * Won't modify state if location is "close enough" to current state
+   * unless force = true.
    */
-  loadCurrentLocation = async () => {
-    let location: ILocationState;
-    let cached = this.loadCachedOrDefaults();
-
+  loadCurrentLocation = async (force = false) => {
     let browserGeo: ICoords;
 
     browserGeo = await browserCoordinates({ enableHighAccuracy: true }).catch(
-      () => ({ ...cached.coords }),
-    );
-
-    if (this.isCloseEnough(cached.coords, browserGeo)) {
-      location = { ...cached };
-    } else {
-      const name = await this.reverseGeocode(browserGeo).catch(() => "");
-      location = { name, coords: browserGeo };
-    }
-
-    return this.setState((prevState) => ({ ...prevState, ...location })).then(
-      () => {
-        const { name, coords } = this.state;
-        this.cacheLocation({ name, coords });
+      (err) => {
+        throw new Error(`Unable to load location: ${err}`);
       },
     );
+
+    if (!force && isCloseEnough(this.state.coords, browserGeo)) {
+      return Promise.resolve();
+    }
+
+    const name = await this.reverseGeocode(browserGeo).catch(() => "");
+    const location = { name, coords: browserGeo };
+
+    cache.save(location);
+    return this.setState(location);
   };
 
-  /**
-   * sets coordinates and attempts to look up / reverse-geocode name of location
-   */
-  loadCoords = async (coords: ICoords) => {
-    const name = await this.reverseGeocode(coords).catch(() => "");
+  /** force set location to coords,
+   * attempts to look up human readable name if none is supplied */
+  setLocation = async (coords: ICoords, locationName = "") => {
+    let name = locationName;
+
+    if (locationName.length === 0) {
+      name = await this.reverseGeocode(coords).catch(() => "");
+    }
+
     return this.setState((prevState) => ({ ...prevState, name, coords }));
   };
 
+  /** Attempts to look up human readable name for location given
+   * coordinates; sets locationName to a blank string if lookup fails,
+   * throws an error if hostName is not set in init() */
   private reverseGeocode = async (coords: ICoords) => {
     if (this.state.hostName.length === 0) {
       throw new Error("Host name not set in LocationContainer!");
     }
 
     const url = reverseGeocodeURL(this.state.hostName, coords.lat, coords.lng);
-    const res = await axios.get(url);
-    const { city, state, county } = res.data.address as IReverseGeocodeResponse;
+    const res = await axios.get(url).catch(() => undefined);
 
-    return `${city || county}, ${state}`;
-  };
-
-  private isCloseEnough = (coordsA: ICoords, coordsB: ICoords) => {
-    const { lat, lng } = coordsB;
-
-    return (
-      isBetween(coordsA.lat, lat - CLOSE_ENOUGH, lat + CLOSE_ENOUGH) &&
-      isBetween(coordsA.lng, lng - CLOSE_ENOUGH, lng + CLOSE_ENOUGH)
-    );
-  };
-
-  private isCached = () => {
-    const location = window.localStorage.getItem("location");
-    if (!location) return false;
-
-    const cached = JSON.parse(location);
-
-    return (
-      "name" in cached &&
-      "coords" in cached &&
-      "lat" in cached.coords &&
-      "lng" in cached.coords
-    );
-  };
-
-  private loadCachedOrDefaults = (): ILocationState => {
-    if (this.isCached()) {
-      const location = window.localStorage.getItem("location");
-
-      if (location) {
-        const parsed = JSON.parse(location);
-        // ensure cache is valid as it's gone through some changes
-        if (
-          parsed &&
-          "name" in parsed &&
-          "coords" in parsed &&
-          "lat" in parsed.coords &&
-          "lng" in parsed.coords
-        ) {
-          return parsed;
-        } else {
-          window.localStorage.clear();
-        }
-      }
+    if (!res) {
+      return "";
     }
 
-    return { ...DEFAULT_LOCATION };
-  };
-
-  private cacheLocation = (location: ILocationState) => {
-    window.localStorage.setItem("location", JSON.stringify(location));
+    const { city, state, county } = res.data.address as IReverseGeocodeResponse;
+    return `${city || county}, ${state}`;
   };
 }

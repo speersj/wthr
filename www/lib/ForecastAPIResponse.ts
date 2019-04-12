@@ -24,7 +24,7 @@ export interface ForecastAPICommon {
 export interface ForecastAPICurrently extends ForecastAPICommon {
   nearestStormDistance: number;
   precipIntensityError: number; // inches per hour
-  precipType: string; // rain/snow/etc
+  precipType?: string; // rain/snow/etc
   temperature: number; // fahrenheit
   apparentTemperature: number; // fahrenheit
 }
@@ -37,18 +37,24 @@ export interface ForecastAPIMinutely {
     precipIntensity: number; // inches per hour
     precipIntensityError: number; // inches per hour
     precipProbability: number; // percentage
-    precipType: string; // rain/snow/etc
+    precipType?: string; // rain/snow/etc
   }[];
+}
+
+export interface ForecastAPIHourlyData extends ForecastAPICommon {
+  temperature: number; // fahrenheit
+  apparentTemperature: number; // fahrenheit
+  precipType?: string; // rain/snow/etc
 }
 
 export interface ForecastAPIHourly {
   summary: string;
   icon: string;
-  data: ForecastAPICurrently[];
+  data: ForecastAPIHourlyData[];
 }
 
 export interface ForecastAPIDailyData extends ForecastAPICommon {
-  precipType: string;
+  precipType?: string;
   sunriseTime: number;
   sunsetTime: number;
   moonPhase: number;
@@ -95,5 +101,6 @@ export interface ForecastAPIResponse {
 
   currently: ForecastAPICurrently;
   minutely: ForecastAPIMinutely;
+  hourly: ForecastAPIHourly;
   daily: ForecastAPIDaily;
 }

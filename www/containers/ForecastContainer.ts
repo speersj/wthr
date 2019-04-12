@@ -35,7 +35,7 @@ export default class ForecastContainer extends Container<
   }
 
   get isLoaded() {
-    return (
+    return !!(
       this.state.hostName.length > 0 &&
       this.state.forecast &&
       this.state.forecast.currently &&

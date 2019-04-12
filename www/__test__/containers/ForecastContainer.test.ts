@@ -2,11 +2,6 @@ import mockedAxios from "axios";
 import ForecastContainer from "../../containers/ForecastContainer";
 import forecastData from "./forecastData";
 
-function cacheToLocalStorage() {
-  const data = JSON.stringify(forecastData());
-  window.localStorage.setItem("forecast", data);
-}
-
 describe("ForecastContainer", () => {
   beforeEach(() => {
     window.localStorage.clear();
@@ -23,13 +18,6 @@ describe("ForecastContainer", () => {
       await container.init("test.com");
       expect(container.state.hostName).toEqual("test.com");
     });
-
-    it("loads previous data from localStorage if it is available", async () => {
-      cacheToLocalStorage();
-      const container = new ForecastContainer();
-      await container.init("hostname");
-      expect(container.isLoaded).toBeTruthy();
-    });
   });
 
   describe("isLoaded", () => {
@@ -44,9 +32,9 @@ describe("ForecastContainer", () => {
     });
 
     it("returns true if hostName is set and data is loaded", async () => {
-      cacheToLocalStorage(); // init will load data from local storage if available
       const container = new ForecastContainer();
       await container.init("hostname");
+      container.state.forecast = forecastData();
       container.state.isLoaded = true;
       expect(container.isLoaded).toBeTruthy();
     });
@@ -60,9 +48,9 @@ describe("ForecastContainer", () => {
     });
 
     it("returns forecast.currently data", async () => {
-      cacheToLocalStorage();
       const container = new ForecastContainer();
       await container.init("hostname");
+      container.state.forecast = forecastData();
       expect(container.currently).toEqual(forecastData().currently);
     });
   });
@@ -75,9 +63,9 @@ describe("ForecastContainer", () => {
     });
 
     it("returns forecast.minutely data", async () => {
-      cacheToLocalStorage();
       const container = new ForecastContainer();
       await container.init("hostname");
+      container.state.forecast = forecastData();
       expect(container.minutely).toEqual(forecastData().minutely);
     });
   });
@@ -90,9 +78,9 @@ describe("ForecastContainer", () => {
     });
 
     it("returns forecast.daily data", async () => {
-      cacheToLocalStorage();
       const container = new ForecastContainer();
       await container.init("hostname");
+      container.state.forecast = forecastData();
       expect(container.daily).toEqual(forecastData().daily);
     });
   });

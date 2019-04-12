@@ -1,4 +1,6 @@
-export default () => ({
+import { ForecastAPIResponse } from "../../lib/ForecastAPIResponse";
+
+export default (): ForecastAPIResponse => ({
   latitude: 44.0521,
   longitude: -123.0868,
   timezone: "America/Los_Angeles",

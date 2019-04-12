@@ -1,3 +1,5 @@
+import { isBetween } from "./utils";
+
 export interface ICoords {
   lat: number;
   lng: number;
@@ -36,4 +38,21 @@ export function browserCoordinates(
       options,
     );
   });
+}
+
+const DEFAULT_MAX_OFFSET = 0.01;
+
+/** returns true if lat/lng are within maxOffset of each other */
+export function isCloseEnough(
+  coordsA: ICoords,
+  coordsB: ICoords,
+  maxOffset = DEFAULT_MAX_OFFSET,
+) {
+  const { lat, lng } = coordsB;
+  const offset = Math.abs(maxOffset);
+
+  return (
+    isBetween(coordsA.lat, lat - offset, lat + offset) &&
+    isBetween(coordsA.lng, lng - offset, lng + offset)
+  );
 }
