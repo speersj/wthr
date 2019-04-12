@@ -19,7 +19,7 @@ interface IReverseGeocodeResponse {
 
 /** if all else fails! */
 const DEFAULT_LOCATION: ILocationState = {
-  name: "Loading...",
+  name: "Portland, Oregon (Default)",
   coords: { lat: 45.5155, lng: -122.6793 } as ICoords,
 };
 
