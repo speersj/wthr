@@ -9,11 +9,11 @@ import TextSmall from "./TextSmall";
 import UVIndex from "./UVIndex";
 import { ForecastAPICurrently } from "../lib/ForecastAPIResponse";
 
-interface Props extends ForecastAPICurrently {
-  title: string;
-}
+type TitleProp = { title: string };
 
-export default function WeatherStatsBar(props: Props) {
+export default function WeatherStatsBar(
+  props: ForecastAPICurrently & TitleProp,
+) {
   const { windSpeed, windBearing, humidity, dewPoint, uvIndex } = props;
 
   return (

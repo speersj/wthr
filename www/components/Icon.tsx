@@ -1,6 +1,10 @@
 import React from "react";
 
 export default function Icon({ name }: { name: string }) {
+  function iconClassName(iconName: string) {
+    return `wi wi-${iconName}`;
+  }
+
   return (
     <i
       title={name}
@@ -9,8 +13,4 @@ export default function Icon({ name }: { name: string }) {
       className={iconClassName(name)}
     />
   );
-}
-
-function iconClassName(iconName: string) {
-  return `wi wi-${iconName}`;
 }

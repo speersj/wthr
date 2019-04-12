@@ -1,7 +1,10 @@
 import React from "react";
-import { Text } from "rebass";
+import { Text, TextProps } from "rebass";
 
-Percentage.defaultProps = { inline: false };
+interface Props extends TextProps {
+  value: number;
+  inline?: boolean;
+}
 
 /**
  * Displays a Percentage
@@ -9,8 +12,9 @@ Percentage.defaultProps = { inline: false };
  * ex: 0.453 = 45%
  * displays inline if props.inline = true
  */
-export default function Percentage(props: { value: number; inline: boolean }) {
+export default function Percentage(props: Props) {
   const css = props.inline ? { display: "inline" } : {};
+
   return (
     <Text css={css} {...props}>
       {Math.round(props.value * 100)}%

@@ -15,49 +15,14 @@ import Title from "./Title";
 import TitleBig from "./TitleBig";
 import UVIndex from "./UVIndex";
 import WeatherIcon from "./WeatherIcon";
+import { ForecastAPIDailyData } from "../lib/ForecastAPIResponse";
 
-export interface Props {
-  time: number; // unix time
-  summary: string;
-  icon: string;
-
-  temperatureLow: number;
-  temperatureHigh: number;
-
-  sunriseTime: number; // unix time
-  sunsetTime: number; // unix time
-  moonPhase: number;
-
-  precipProbability: number; // percentage
-  precipIntensity: number; // inches / hour
-  precipType: string; // rain / snow etc
-
-  windSpeed: number; // mph
-  windBearing: number; // direction 0->360
-  cloudCover: number; // percentage
-
-  dewPoint: number; // deg f
-  humidity: number; // percentage
-  pressure: number; // millibars
-
-  uvIndex: number;
-  visibility: number; // up to 10 miles
-}
-
-const DailyForecast = (props: Props) => {
-  const { time } = props;
-
-  if (!time && time !== 0) {
-    return (
-      <Box width={1} bg="bgEm">
-        <TitleBig>🌈</TitleBig>
-      </Box>
-    );
-  }
-
+export default function DailyForecast(props: ForecastAPIDailyData) {
   return (
     <Box width={1} bg="bgEm">
-      <Title color="text">{`${toDayOfWeek(time)}, ${toDate(time)}`}</Title>
+      <Title color="text">{`${toDayOfWeek(props.time)}, ${toDate(
+        props.time,
+      )}`}</Title>
       <TitleBig>
         <WeatherIcon name={props.icon} />
       </TitleBig>
@@ -143,11 +108,9 @@ const DailyForecast = (props: Props) => {
       </Flex>
     </Box>
   );
-};
+}
 
 function renderVisibility(visibility: number) {
   const vis = Math.round(visibility);
   return vis >= 10 ? "> 10 miles" : `${vis} miles`;
 }
-
-export default DailyForecast;

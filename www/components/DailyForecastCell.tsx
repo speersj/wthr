@@ -1,16 +1,11 @@
-import React, { ReactNode } from "react";
+import React from "react";
 import TextBoxCentered from "./TextBoxCentered";
+import { BoxProps } from "rebass";
 
-interface T {
-  width: number;
-  color?: string;
-  children: ReactNode;
+export default function DailyForecastCell(props: BoxProps) {
+  return (
+    <TextBoxCentered width={1 / 3} fontSize={[3, 4]} my={3} {...props}>
+      {props.children}
+    </TextBoxCentered>
+  );
 }
-
-const DailyForecastCell = (props: T) => (
-  <TextBoxCentered width={1 / 3} fontSize={[3, 4]} {...props} my={3}>
-    {props.children}
-  </TextBoxCentered>
-);
-
-export default DailyForecastCell;

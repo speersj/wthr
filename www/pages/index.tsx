@@ -34,6 +34,7 @@ export default function Index({ host }: { host: string }) {
             return (
               <>
                 <Location container={location} />
+
                 <WeatherStatsBar
                   title={location.locationName}
                   {...forecast.currently}

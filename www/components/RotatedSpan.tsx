@@ -5,12 +5,8 @@ interface Props {
   children: ReactNode;
 }
 
-RotatedSpan.defaultProps = { angle: 0 };
-
-/**
- * Wraps children in a rotated span given a 0-360 angle.
- */
-export default function RotatedSpan({ angle, children }: Props) {
+/** Wraps children in a rotated span given a 0-360 angle. */
+export default function RotatedSpan({ angle = 0, children }: Props) {
   return (
     <span data-testid={`rotated-span-${angle}`} style={style(angle)}>
       {children}

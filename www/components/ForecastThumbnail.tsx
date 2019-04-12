@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React from "react";
 import { Card, Heading } from "rebass";
 import styled from "styled-components";
 
@@ -8,12 +8,9 @@ import Temperature from "./Temperature";
 import TextBoxCentered from "./TextBoxCentered";
 import TextCentered from "./TextCentered";
 import WeatherIcon from "./WeatherIcon";
+import { ForecastAPIDailyData } from "../lib/ForecastAPIResponse";
 
-interface Props {
-  icon: string;
-  temperatureHigh: number;
-  temperatureLow: number;
-  time: number;
+interface Props extends ForecastAPIDailyData {
   active: boolean;
   onClick(time: number): void;
 }
@@ -27,7 +24,7 @@ const HighlightCard = styled(Card)`
   }
 `;
 
-const ForecastThumbnail: FC<Props> = (props: Props) => {
+export default function ForecastThumbnail(props: Props) {
   const {
     onClick,
     icon,
@@ -62,8 +59,4 @@ const ForecastThumbnail: FC<Props> = (props: Props) => {
       </TextCentered>
     </HighlightCard>
   );
-};
-
-ForecastThumbnail.defaultProps = { active: false };
-
-export default ForecastThumbnail;
+}

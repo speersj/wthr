@@ -1,9 +1,14 @@
 import React from "react";
 import { Text, TextProps } from "rebass";
 
-export default function Temperature(
-  props: { value: number; inline?: boolean } & TextProps,
-) {
+interface Props extends TextProps {
+  value: number;
+  inline: boolean;
+}
+
+Temperature.defaultProps = { inline: false };
+
+export default function Temperature(props: Props) {
   const css = props.inline ? { display: "inline" } : {};
 
   return (

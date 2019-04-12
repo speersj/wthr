@@ -1,5 +1,5 @@
-import React from "react";
-import { Link } from "rebass";
+import React, { RefObject } from "react";
+import { Link, LinkProps } from "rebass";
 import styled from "styled-components";
 
 const StyledLink = styled(Link)`
@@ -11,14 +11,14 @@ const StyledLink = styled(Link)`
   }
 `;
 
-const DarkSkyLink = (props: any) => {
+const DarkSkyLink = (props: RefObject<LinkProps>) => {
   return (
     <StyledLink
-      {...props}
-      href="https://darksky.net/poweredby/"
       m={1}
       p={2}
+      {...props}
       target="_blank"
+      href="https://darksky.net/poweredby/"
       rel="noopener noreferrer"
     >
       Powered by Dark Sky
