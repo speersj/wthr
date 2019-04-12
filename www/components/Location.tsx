@@ -11,11 +11,7 @@ interface Props {
 export default function Location(props: Props) {
   return (
     <Box py={2} bg="bgEm" color="contrast">
-      {location ? (
-        <Title>{props.container.locationName}</Title>
-      ) : (
-        <Title data-testid="loading-location">Loading...</Title>
-      )}
+      <Title>{props.container.locationName}</Title>
     </Box>
   );
 }
