@@ -3,15 +3,14 @@ import { Box, Flex } from "rebass";
 import DailyForecast from "./DailyForecast";
 import ForecastThumbnail from "./ForecastThumbnail";
 import { ForecastAPIDailyData } from "../lib/ForecastAPIResponse";
-import TextBoxCentered from "./TextBoxCentered";
 
-type ComponentProps = { data: ForecastAPIDailyData[] };
-type ComponentState = { focusedData?: ForecastAPIDailyData };
+type Props = { data: ForecastAPIDailyData[] };
+type State = { focusedData?: ForecastAPIDailyData };
 
-class Forecast extends Component<ComponentProps, ComponentState> {
-  state: ComponentState = {};
+class Forecast extends Component<Props, State> {
+  state: State = {};
 
-  componentDidUpdate(prevProps: ComponentProps) {
+  componentDidUpdate() {
     if (!this.state.focusedData) {
       this.setState({ focusedData: this.props.data[0] });
     }
@@ -40,9 +39,7 @@ class Forecast extends Component<ComponentProps, ComponentState> {
           ))}
         </Flex>
         <Box py={3} width={1} bg="bg">
-          {this.isLoaded && (
-            <DailyForecast {...focusedData as ForecastAPIDailyData} />
-          )}
+          <DailyForecast {...focusedData as ForecastAPIDailyData} />
         </Box>
       </>
     );
@@ -55,10 +52,6 @@ class Forecast extends Component<ComponentProps, ComponentState> {
 
     this.setState({ focusedData: this.props.data.find(finder) });
   };
-
-  get isLoaded() {
-    return this.props.data.length > 0;
-  }
 }
 
 export default Forecast;
