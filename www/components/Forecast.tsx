@@ -10,8 +10,8 @@ type State = { focusedData?: ForecastAPIDailyData };
 class Forecast extends Component<Props, State> {
   state: State = {};
 
-  componentDidUpdate() {
-    if (!this.state.focusedData) {
+  componentDidMount() {
+    if (!this.state.focusedData && this.props.data.length > 0) {
       this.setState({ focusedData: this.props.data[0] });
     }
   }

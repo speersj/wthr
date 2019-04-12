@@ -61,10 +61,21 @@ export default class LocationContainer extends Container<
     return this.setState({ ...DEFAULT_LOCATION });
   }
 
+  get isDefault() {
+    const { name, coords } = this.state;
+    return (
+      name === DEFAULT_LOCATION.name &&
+      coords.lat === DEFAULT_LOCATION.coords.lat &&
+      coords.lng === DEFAULT_LOCATION.coords.lng
+    );
+  }
+
   /**
    * Loads current location from localStorage / navigator.geolocation.
    * Won't modify state if location is "close enough" to current state
    * unless force = true.
+   * Resolves to true if location was changed from its previous state,
+   * false if location was not changed.
    */
   loadCurrentLocation = async (force = false) => {
     let browserGeo: ICoords;
@@ -76,14 +87,15 @@ export default class LocationContainer extends Container<
     );
 
     if (!force && isCloseEnough(this.state.coords, browserGeo)) {
-      return Promise.resolve();
+      return Promise.resolve(false);
     }
 
     const name = await this.reverseGeocode(browserGeo).catch(() => "");
     const location = { name, coords: browserGeo };
 
     cache.save(location);
-    return this.setState(location);
+    await this.setState(location);
+    return Promise.resolve(true);
   };
 
   /** force set location to coords,
