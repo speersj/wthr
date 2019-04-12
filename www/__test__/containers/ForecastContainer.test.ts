@@ -1,6 +1,6 @@
 import mockedAxios from "axios";
 import ForecastContainer from "../../containers/ForecastContainer";
-import forecastData from "./forecastData";
+import forecastData from "../forecastData";
 
 describe("ForecastContainer", () => {
   beforeEach(() => {

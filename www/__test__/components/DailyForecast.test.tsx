@@ -1,50 +1,12 @@
 import React from "react";
-import { render, cleanup } from "react-testing-library";
-import "jest-dom/extend-expect";
-import DailyForecast, { Props } from "../../components/DailyForecast";
+import { render } from "react-testing-library";
+import DailyForecast from "../../components/DailyForecast";
 import { moonPhaseClassName } from "../../components/MoonPhase";
+import forecastData from "../forecastData";
 
-afterEach(cleanup);
-
-const props: Props = {
-  time: 1547798400, // 'Friday, January 18, 2019'
-  summary: "It's raining cats and dogs",
-  icon: "rain",
-
-  temperatureLow: 50,
-  temperatureHigh: 65,
-
-  sunriseTime: 1547998917,
-  sunsetTime: 1548032824,
-  moonPhase: 0.52,
-
-  precipProbability: 0.5,
-  precipIntensity: 0.0417,
-  precipType: "rain",
-
-  windSpeed: 5,
-  windBearing: 45,
-  cloudCover: 0.9,
-
-  dewPoint: 60,
-  humidity: 0.9,
-  pressure: 100,
-
-  uvIndex: 1,
-  visibility: 5,
-};
+const props = forecastData().daily.data[0];
 
 describe("DailyForecast", () => {
-  describe("When loading", () => {
-    /**
-     * TODO
-     * update tests for loading state
-     */
-    // it("should display a 🌈", () => {
-    //   render(<DailyForecast />).getByText("🌈");
-    // });
-  });
-
   describe("When passed in loaded props", () => {
     it("should display a summary of conditions", () => {
       render(<DailyForecast {...props} />).getByText(props.summary);
@@ -60,24 +22,24 @@ describe("DailyForecast", () => {
     });
 
     it("renders the dew point as a temperature", () => {
-      render(<DailyForecast {...props} />).getByText("60˚");
+      render(<DailyForecast {...props} />).getByText("42˚");
     });
 
     it("renders humidity as a percentage", () => {
-      render(<DailyForecast {...props} />).getByText("90%");
+      render(<DailyForecast {...props} />).getByText("89%");
     });
 
     it("renders pressure as mb", () => {
-      render(<DailyForecast {...props} />).getByText("100mb");
+      render(<DailyForecast {...props} />).getByText("1018mb");
     });
 
     it("displays UV Index", () => {
-      render(<DailyForecast {...props} />).getByText("UV 1");
+      render(<DailyForecast {...props} />).getByText("UV 2");
     });
 
     describe("visibility", () => {
       it("renders visibility in miles", () => {
-        render(<DailyForecast {...props} />).getByText("5 miles");
+        render(<DailyForecast {...props} />).getByText("8 miles");
       });
 
       it("displays > 10 miles if value is === 10", () => {
@@ -119,11 +81,11 @@ describe("DailyForecast", () => {
 
     describe("temperatures", () => {
       it("should display the high temperature", () => {
-        render(<DailyForecast {...props} />).getByText("65˚");
+        render(<DailyForecast {...props} />).getByText("51˚");
       });
 
       it("should display the low temperature", () => {
-        render(<DailyForecast {...props} />).getByText("50˚");
+        render(<DailyForecast {...props} />).getByText("48˚");
       });
     });
 
@@ -190,7 +152,7 @@ describe("DailyForecast", () => {
       });
 
       it("outputs a rotated arrow to indicate wind bearing", () => {
-        render(<DailyForecast {...props} />).getByTestId("rotated-span-45");
+        render(<DailyForecast {...props} />).getByTestId("rotated-span-171");
       });
     });
   });

@@ -1,10 +1,6 @@
 import React from "react";
-import { render, cleanup } from "react-testing-library";
-import "jest-dom/extend-expect";
-
+import { render } from "react-testing-library";
 import TextBoxCentered from "../../components/TextBoxCentered";
-
-afterEach(cleanup);
 
 describe("TextBoxCentered", () => {
   it("renders its children", () => {

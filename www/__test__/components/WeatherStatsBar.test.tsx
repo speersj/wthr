@@ -1,11 +1,10 @@
 import React from "react";
-import { render, cleanup } from "react-testing-library";
-import "jest-dom/extend-expect";
+import { render } from "react-testing-library";
 import WeatherStatsBar from "../../components/WeatherStatsBar";
-
-afterEach(cleanup);
+import forecastData from "../forecastData";
 
 const props = {
+  ...forecastData().currently,
   windSpeed: 4,
   windBearing: 45,
   humidity: 0.8,

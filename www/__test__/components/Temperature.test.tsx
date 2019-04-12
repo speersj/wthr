@@ -1,10 +1,6 @@
 import React from "react";
-import { render, cleanup } from "react-testing-library";
-import "jest-dom/extend-expect";
-
+import { render } from "react-testing-library";
 import Temperature from "../../components/Temperature";
-
-afterEach(cleanup);
 
 describe("Temperature", () => {
   it("should display the temperature as a rounded number", () => {

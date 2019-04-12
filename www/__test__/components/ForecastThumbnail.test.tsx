@@ -1,31 +1,30 @@
 import React from "react";
-import { render, cleanup, fireEvent } from "react-testing-library";
-import "jest-dom/extend-expect";
+import { render, fireEvent } from "react-testing-library";
 import ForecastThumbnail from "../../components/ForecastThumbnail";
-
-afterEach(cleanup);
+import forecastData from "../forecastData";
 
 const props = {
-  icon: "sunny",
-  onClick: jest.fn(),
+  ...forecastData().daily.data[0],
   active: false,
-  temperatureHigh: 85,
-  temperatureLow: 62,
-  time: 1547798400, // 'Friday, January 18, 2019'
+  onClick: jest.fn(),
 };
 
 describe("ForecastThumbnail", () => {
   it("renders the correct icon", () => {
     const { getByRole } = render(<ForecastThumbnail {...props} />);
-    expect(getByRole("img").className).toEqual("wi wi-forecast-io-sunny");
+    expect(getByRole("img").className).toEqual("wi wi-forecast-io-rain");
   });
 
   it("renders the high temperature", () => {
-    render(<ForecastThumbnail {...props} />).getByText("85˚");
+    render(<ForecastThumbnail {...props} temperatureHigh={50} />).getByText(
+      "50˚",
+    );
   });
 
   it("renders the low temperature", () => {
-    render(<ForecastThumbnail {...props} />).getByText("62˚");
+    render(<ForecastThumbnail {...props} temperatureLow={62} />).getByText(
+      "62˚",
+    );
   });
 
   it("renders the day of the week", () => {

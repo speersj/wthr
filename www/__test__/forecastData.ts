@@ -1,4 +1,4 @@
-import { ForecastAPIResponse } from "../../lib/ForecastAPIResponse";
+import { ForecastAPIResponse } from "../lib/ForecastAPIResponse";
 
 export default (): ForecastAPIResponse => ({
   latitude: 44.0521,

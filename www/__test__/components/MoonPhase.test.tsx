@@ -1,13 +1,9 @@
 import React from "react";
-import { render, cleanup } from "react-testing-library";
-import "jest-dom/extend-expect";
-
+import { render } from "react-testing-library";
 import MoonPhaseIcon, {
   moonPhaseClassName,
   moonPhaseName,
 } from "../../components/MoonPhase";
-
-afterEach(cleanup);
 
 describe("moonPhaseClassName", () => {
   it('returns "wi wi-moon-new" for a zero value', () => {
