@@ -54,7 +54,11 @@ export default function Index({ host }: { host: string }) {
           } else {
             return (
               <SplashScreen>
-                <Loading text="🌈 Loading wthr... 🌈" />;
+                <Loading
+                  color={Math.random() > 0.5 ? "accent" : "accent2"}
+                  text="🌈 Loading wthr... 🌈"
+                />
+                ;
               </SplashScreen>
             );
           }
